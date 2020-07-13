@@ -3,7 +3,7 @@
     justify-content: center;
 }
 .grid {
-    width: 685px;
+    width: 660px;
     height: 640px;
     background-color: #ff9933;
     display: flex;
@@ -11,14 +11,13 @@
     margin-right: 15px;
 }
 
-/* .grid div {
+.grid div {
     width: 40px;
     height: 40px;
-    background-color: blue;
-    border: 1px solid black;
-} */
+    margin-right: 5px;
+}
 
-.test{
+.block{
     width: 40px;
     height: 40px;
     background-color: #ccffff;
