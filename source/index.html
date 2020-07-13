@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="grid">
+            <script>
+                var grid = document.querySelector('.grid');
+                for(let i=0;i<3;i++){
+                    var test = document.createElement('div');
+                    test.classList.add("test");
+                    grid.appendChild(test);
+                } 
+            </script>
+        </div>
+        <div class="next-block">
+            <script>
+                var nextBlock = document.querySelector('.next-block');
+                for(let i=0;i<3;i++){
+                    var test = document.createElement('div');
+                    test.classList.add("test");
+                    nextBlock.appendChild(test);
+                } 
+            </script>
+        </div>
+        <!-- <div class="score-group">
+            <p>score</p>
+            <button type="button" onclick="test()">start</button>
+        </div> -->
+    </div>
+ 
+</body>
+</html>
