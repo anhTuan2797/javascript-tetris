@@ -12,8 +12,13 @@
         <div class="grid">
             <script>
                 var grid = document.querySelector('.grid');
-                for(let i=0;i<210;i++){
+                for(let i=0;i<196;i++){
                     var test = document.createElement('div');
+                    grid.appendChild(test);
+                } 
+                for(let i=0;i<14;i++){
+                    var test = document.createElement('div');
+                    test.classList.add('floor');
                     grid.appendChild(test);
                 } 
             </script>

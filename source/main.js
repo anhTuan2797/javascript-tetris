@@ -38,16 +38,75 @@ document.addEventListener('DOMContentLoaded', () => {
     const allBlock = [oBlock, iBlock, lBlock, zBlock, tBlock];
 
     let currentPosition = 6;
-    let randomBlockIndex = Math.floor(Math.random()*5);
-    let randomBlockPosition = Math.floor(Math.random()*4);
-    console.log(randomBlockIndex);
-    console.log(randomBlockPosition);
-    let currentBlock = allBlock[randomBlockIndex][randomBlockPosition];
+    let randomBlockIndex;
+    let randomBlockPosition;
+    let currentBlock;
+    makeARandomBlock();
     draw();
+    setInterval(() => {
+        if( checkFloor() || checkLandedBlock()){
+            freeze();
+        } 
+        else{
+        moveDown();
+        }
+    }, 1000);
+    // unDraw();
     // draw a block function
     function draw() {
         currentBlock.forEach(index => {
             squares[currentPosition + index].classList.add('block');
         });
     }
+    // undraw a block function
+    function unDraw() {
+        currentBlock.forEach(index => {
+            squares[currentPosition + index].classList.remove('block');
+        });
+    }
+
+    // check for landed block function
+    function checkLandedBlock() {
+        if(currentBlock.some(index => squares[currentPosition + index +width].classList.contains('landed-block'))){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    // check for floor function
+    function checkFloor(){
+        if(currentBlock.some(index => squares[currentPosition + index].classList.contains('floor'))){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    // move a block down function
+    function moveDown() {
+        unDraw();
+        currentPosition += width;
+        draw();
+    }
+
+    // make a random block function
+    function makeARandomBlock() {
+        currentPosition = 6;
+        randomBlockIndex = Math.floor(Math.random() * 5);
+        randomBlockPosition = Math.floor(Math.random() * 4);
+        currentBlock = allBlock[randomBlockIndex][randomBlockPosition];
+    }
+    // freeze a block function 
+    function freeze(){
+        unDraw();
+        currentBlock.forEach(index => {
+            squares[currentPosition + index].classList.add('landed-block');
+        });
+        makeARandomBlock();
+    }
 });
+
+    
