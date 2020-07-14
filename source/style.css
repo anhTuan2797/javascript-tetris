@@ -44,3 +44,30 @@
     margin-right: 5px;
     box-shadow: 5px 5px;
 }
+
+.score-button {
+    width: 140px;
+    height: 150px;
+    background-color: #ff9933;
+    border: 2px solid black;
+    margin-left: 10px;
+    text-align: center;
+}
+
+.score-button h3{
+    font-family: 'Roboto', sans-serif;
+}
+
+.score-button p {
+    font-family: 'Roboto', sans-serif;
+}
+
+.score-button button {
+    background-color: #99ff66;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    padding: 5px;
+}

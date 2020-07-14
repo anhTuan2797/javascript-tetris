@@ -41,17 +41,41 @@ document.addEventListener('DOMContentLoaded', () => {
     let randomBlockIndex;
     let randomBlockPosition;
     let currentBlock;
-    makeARandomBlock();
-    draw();
-    setInterval(() => {
-        if( checkFloor() || checkLandedBlock()){
-            freeze();
-        } 
-        else{
-        moveDown();
+    let status = 'stopped';
+    let intervalId = 0;
+    let button = document.getElementById('StartPauseButton');
+    button.addEventListener('click', function () {
+        if (status == 'stopped') {
+            status = 'running';
+            button.style.backgroundColor = '#ff3300';
+            button.innerText = 'pause';
+            makeARandomBlock();
+            draw();
+            intervalId = setInterval(() => {
+                if (checkFloor() || checkLandedBlock()) {
+                    freeze();
+                } else {
+                    moveDown();
+                }
+            }, 1000);
+        }else if(status == 'running'){
+            status = 'paused';
+            button.style.backgroundColor = '#99ff66';
+            button.innerText = 'start';
+            clearInterval(intervalId);
+        } else if(status == 'paused'){
+            status = 'running';
+            button.style.backgroundColor = '#ff3300';
+            button.innerText = 'pause';
+            intervalId = setInterval(() => {
+                if (checkFloor() || checkLandedBlock()) {
+                    freeze();
+                } else {
+                    moveDown();
+                }
+            }, 1000);
         }
-    }, 1000);
-    // unDraw();
+    })
     // draw a block function
     function draw() {
         currentBlock.forEach(index => {
@@ -67,20 +91,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // check for landed block function
     function checkLandedBlock() {
-        if(currentBlock.some(index => squares[currentPosition + index +width].classList.contains('landed-block'))){
+        if (currentBlock.some(index => squares[currentPosition + index + width].classList.contains('landed-block'))) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
     // check for floor function
-    function checkFloor(){
-        if(currentBlock.some(index => squares[currentPosition + index].classList.contains('floor'))){
+    function checkFloor() {
+        if (currentBlock.some(index => squares[currentPosition + index].classList.contains('floor'))) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -91,7 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
         currentPosition += width;
         draw();
     }
-
     // make a random block function
     function makeARandomBlock() {
         currentPosition = 6;
@@ -100,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentBlock = allBlock[randomBlockIndex][randomBlockPosition];
     }
     // freeze a block function 
-    function freeze(){
+    function freeze() {
         unDraw();
         currentBlock.forEach(index => {
             squares[currentPosition + index].classList.add('landed-block');
@@ -108,5 +129,3 @@ document.addEventListener('DOMContentLoaded', () => {
         makeARandomBlock();
     }
 });
-
-    
