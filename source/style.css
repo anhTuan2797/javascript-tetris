@@ -3,7 +3,7 @@
     justify-content: center;
 }
 .grid {
-    width: 660px;
+    width: 630px;
     height: 640px;
     background-color: #ff9933;
     display: flex;
@@ -16,8 +16,6 @@
     width: 40px;
     height: 40px;
     margin-right: 5px;
-    /* border: 1px solid black; */
-
 }
 
 .block{
@@ -71,3 +69,4 @@
     text-transform: uppercase;
     padding: 5px;
 }
+
