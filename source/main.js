@@ -2,19 +2,15 @@
 document.addEventListener('DOMContentLoaded', () => {
     const grid = document.querySelector('.grid');
     const squares = Array.from(document.querySelectorAll('.grid div'));
+    const nextSquare = Array.from(document.querySelectorAll('.next-block div'));
     const width = 14;
 
     const oBlock = [
-        [0, 1, width, width + 1],
-        [0, 1, width, width + 1],
-        [0, 1, width, width + 1],
         [0, 1, width, width + 1]
     ];
     const iBlock = [
-        [1, width + 1, width * 2 + 1],
-        [0, 1, 2],
-        [1, width + 1, width * 2 + 1],
-        [0, 1, 2]
+        [1 ,width + 1, width*2+1],
+        [0,1,2]
     ];
     const lBlock = [
         [0, width, 2 * width, 2 * width + 1],
@@ -23,8 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
         [0, 1, 2, width]
     ];
     const zBlock = [
-        [0, 1, width + 1, width + 2],
-        [1, width, width + 1, width * 2],
         [0, 1, width + 1, width + 2],
         [1, width, width + 1, width * 2]
     ];
@@ -40,6 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentPosition = 6;
     let blockIndex;
     let blockRotation;
+    let nextBlockIndex;
+    let nextBlockRotation;
+    let nextBlockType;
+    let nextBlock;
+    let currentBlockType;
     let currentBlock;
     let status = 'stopped';
     let intervalId = 0;
@@ -50,7 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
             button.style.backgroundColor = '#ff3300';
             button.innerText = 'pause';
             makeARandomBlock();
+            makeNextBlock();
             draw();
+            drawNextBlock();
             intervalId = setInterval(() => {
                 if (checkFloor() || checkLandedBlock()) {
                     freeze();
@@ -98,7 +99,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
         if(e.keyCode == 39) {
             if (status == 'running'){
-                console.log('move right');
                 moveRight();
         }
     }
@@ -116,6 +116,34 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // draw next block function
+    function drawNextBlock(){
+        nextBlock.forEach(index => {
+            if(index < 3){
+                nextSquare[index].classList.add('block');
+            }
+            else if((index >= width) && (index < 2*width)){
+                nextSquare[index - width+3].classList.add('block');
+            }
+            else {
+                nextSquare[index - (width -3)*2].classList.add('block');
+            }
+        });
+    }
+    // undraw next block function
+    function unDrawNextBlock(){
+        nextBlock.forEach(index => {
+            if(index < 3){
+                nextSquare[index].classList.remove('block');
+            }
+            else if((index >= width) && (index < 2*width)){
+                nextSquare[index - width+3].classList.remove('block');
+            }
+            else {
+                nextSquare[index - (width -3)*2].classList.remove('block');
+            }
+        });
+    }
     // check for landed block function use for fall down block
     function checkLandedBlock() {
         if (currentBlock.some(index => squares[currentPosition + index + width].classList.contains('landed-block'))) {
@@ -160,22 +188,44 @@ document.addEventListener('DOMContentLoaded', () => {
     function makeARandomBlock() {
         currentPosition = 6;
         blockIndex = Math.floor(Math.random() * 5);
-        blockRotation = Math.floor(Math.random() * 4);
-        currentBlock = allBlock[blockIndex][blockRotation];
+        currentBlockType = allBlock[blockIndex];
+        blockRotation = Math.floor(Math.random() * currentBlockType.length);
+        currentBlock = currentBlockType[blockRotation];
+    }
+    // make next block
+    function makeNextBlock(){
+        nextBlockIndex = Math.floor(Math.random() * 5);
+        nextBlockType = allBlock[nextBlockIndex];
+        nextBlockRotation = Math.floor(Math.random() * nextBlockType.length); 
+        nextBlock = nextBlockType[nextBlockRotation];
+    }
+    // make new block
+    function makeNewBlock(){
+        currentPosition = 6;
+        blockIndex = nextBlockIndex;
+        blockRotation = nextBlockRotation;
+        currentBlockType = allBlock[blockIndex];
+        currentBlock = currentBlockType[blockRotation];
     }
     // freeze a block function 
     function freeze() {
         unDraw();
+        unDrawNextBlock();
         currentBlock.forEach(index => {
             squares[currentPosition + index].classList.add('landed-block');
         });
-        makeARandomBlock();
+        makeNewBlock();
+        makeNextBlock();
+        draw();
+        drawNextBlock();
     }
     // rotate block function
     function rotate(){
+        console.log(blockRotation);
+        console.log(currentBlockType.length);
         unDraw();
         blockRotation++;
-        if(blockRotation === currentBlock.length){
+        if(blockRotation === currentBlockType.length){
             blockRotation =0;
         }
         currentBlock = allBlock[blockIndex][blockRotation];
