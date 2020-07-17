@@ -1,10 +1,10 @@
 // main function:
 document.addEventListener('DOMContentLoaded', () => {
-    const grid = document.querySelector('.grid');
-    const squares = Array.from(document.querySelectorAll('.grid div'));
+    let grid = document.querySelector('.grid');
+    let squares = Array.from(document.querySelectorAll('.grid div'));
     const nextSquare = Array.from(document.querySelectorAll('.next-block div'));
     const width = 14;
-
+    let score =0;
     const oBlock = [
         [0, 1, width, width + 1]
     ];
@@ -186,7 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // make a random block function
     function makeARandomBlock() {
-        currentPosition = 6;
         blockIndex = Math.floor(Math.random() * 5);
         currentBlockType = allBlock[blockIndex];
         blockRotation = Math.floor(Math.random() * currentBlockType.length);
@@ -213,7 +212,9 @@ document.addEventListener('DOMContentLoaded', () => {
         unDrawNextBlock();
         currentBlock.forEach(index => {
             squares[currentPosition + index].classList.add('landed-block');
+            squares[currentPosition + index].style.backgroundColor = 'blue';
         });
+        addScore();
         makeNewBlock();
         makeNextBlock();
         draw();
@@ -221,8 +222,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // rotate block function
     function rotate(){
-        console.log(blockRotation);
-        console.log(currentBlockType.length);
         unDraw();
         blockRotation++;
         if(blockRotation === currentBlockType.length){
@@ -263,5 +262,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentPosition++;
                 draw();
             }
+    }
+    // add score function
+    function addScore(){
+        for(let i =0;i<196;i+=width){
+            row = [i,i+1,i+2,i+3,i+4,i+5,i+6,i+7,i+8,i+9,i+10,i+11,i+12,i+13];
+            if(row.every(index =>{
+                return squares[index].classList.contains('landed-block');
+            })){
+                score++;
+                document.querySelector('#score').innerText= score;
+                row.forEach(index =>{
+                    squares[index].classList.remove('landed-block');
+                    squares[index].classList.remove('block');
+                    squares[index].style.backgroundColor = '';
+                });
+                removedRow = squares.splice(i,width);
+                squares = removedRow.concat(squares);
+                squares.forEach(div => {
+                    grid.appendChild(div);
+                });
+            }
+        }
     }
 });

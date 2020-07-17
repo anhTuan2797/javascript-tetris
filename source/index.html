@@ -19,7 +19,8 @@
                 } 
                 for(let i=0;i<14;i++){
                     var test = document.createElement('div');
-                    test.classList.add('floor');
+                    test.classList.add('landed-block');
+                    test.style.backgroundColor = 'red';
                     grid.appendChild(test);
                 } 
             </script>
@@ -35,7 +36,7 @@
         </div>
         <div class="score-button">
             <h3>score</h3>
-            <p>0</p>
+            <p id="score">0</p>
             <button type="button" id="StartPauseButton">start</button>
         </div>
     </div>
