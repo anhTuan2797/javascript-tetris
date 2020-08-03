@@ -45,6 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let button = document.getElementById('StartPauseButton');
     button.addEventListener('click', function () {
         if (status == 'stopped') {
+            clearGrid();
+            document.querySelector('#score').innerText= score;
             status = 'running';
             button.style.backgroundColor = '#ff3300';
             button.innerText = 'pause';
@@ -216,9 +218,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         addScore();
         makeNewBlock();
-        makeNextBlock();
         draw();
-        drawNextBlock();
+        if(!isGameOver()){
+            makeNextBlock();
+            drawNextBlock();
+        }
+        else{
+            document.querySelector('#score').innerText= "game over";
+            clearInterval(intervalId);
+            status = 'stopped';
+            button.style.backgroundColor = '#99ff66';
+            button.innerText = 'start';
+            score =0;
+        }
     }
     // rotate block function
     function rotate(){
@@ -283,6 +295,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     grid.appendChild(div);
                 });
             }
+        }
+    }
+    //check gameover event function
+    function isGameOver(){
+        return !(currentBlock.every(index =>{
+            return (!squares[currentPosition + index].classList.contains('landed-block'));
+        }));
+    }
+    // clear the grid function 
+    function clearGrid(){
+        for(let i =0; i<196;i++){
+            squares[i].classList.remove('landed-block');
+            squares[i].classList.remove('block');
+            squares[i].style.backgroundColor = '';
         }
     }
 });
