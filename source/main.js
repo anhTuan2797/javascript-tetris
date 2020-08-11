@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextSquare = Array.from(document.querySelectorAll('.next-block div'));
     const width = 14;
     let score =0;
+    // all blocks
     const oBlock = [
         [0, 1, width, width + 1]
     ];
@@ -43,7 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let status = 'stopped';
     let intervalId = 0;
     let button = document.getElementById('StartPauseButton');
+    
+    // click event
     button.addEventListener('click', function () {
+        // start game
         if (status == 'stopped') {
             clearGrid();
             document.querySelector('#score').innerText= score;
@@ -61,12 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     moveDown();
                 }
             }, 1000);
-        } else if (status == 'running') {
+        } else if (status == 'running') {  // pause game
             status = 'paused';
             button.style.backgroundColor = '#99ff66';
             button.innerText = 'start';
             clearInterval(intervalId);
-        } else if (status == 'paused') {
+        } else if (status == 'paused') {    // continue game
             status = 'running';
             button.style.backgroundColor = '#ff3300';
             button.innerText = 'pause';
@@ -79,12 +83,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 1000);
         }
     })
+    // rotate block
     document.addEventListener('keydown', function (e) {
         if (e.keyCode == 38) {
             if (status == 'running') {
                 rotate();
             }
         }
+        // move block down
         if (e.keyCode == 40) {
             if (status == 'running'){
                 if (checkFloor() || checkLandedBlock()) {
@@ -94,11 +100,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         }
+        //  move bock left
         if (e.keyCode == 37) {
             if (status == 'running'){
                 moveLeft();
         }
     }
+        //  move block right
         if(e.keyCode == 39) {
             if (status == 'running'){
                 moveRight();
@@ -132,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
     // undraw next block function
     function unDrawNextBlock(){
         nextBlock.forEach(index => {
@@ -146,6 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
     // check for landed block function use for fall down block
     function checkLandedBlock() {
         if (currentBlock.some(index => squares[currentPosition + index + width].classList.contains('landed-block'))) {
@@ -154,6 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return false;
         }
     }
+
     // check for landed block function use for moving block
     function checkLandedBlockForMove(nextPosition){
         if (currentBlock.some(index => squares[currentPosition + index + nextPosition].classList.contains('landed-block'))) {
@@ -162,6 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return false;
         }
     }
+
     // check for floor function
     function checkFloor() {
         if (currentBlock.some(index => squares[currentPosition + index].classList.contains('floor'))) {
@@ -170,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return false;
         }
     }
+
     // check if the block is at far right function 
     function isAtRight(){
         return currentBlock.some(index => (currentPosition + index +1)% width === 0)
@@ -186,6 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentPosition += width;
         draw();
     }
+
     // make a random block function
     function makeARandomBlock() {
         blockIndex = Math.floor(Math.random() * 5);
@@ -193,6 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
         blockRotation = Math.floor(Math.random() * currentBlockType.length);
         currentBlock = currentBlockType[blockRotation];
     }
+
     // make next block
     function makeNextBlock(){
         nextBlockIndex = Math.floor(Math.random() * 5);
@@ -200,6 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
         nextBlockRotation = Math.floor(Math.random() * nextBlockType.length); 
         nextBlock = nextBlockType[nextBlockRotation];
     }
+
     // make new block
     function makeNewBlock(){
         currentPosition = 6;
@@ -208,6 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentBlockType = allBlock[blockIndex];
         currentBlock = currentBlockType[blockRotation];
     }
+
     // freeze a block function 
     function freeze() {
         unDraw();
@@ -232,6 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
             score =0;
         }
     }
+
     // rotate block function
     function rotate(){
         unDraw();
@@ -297,12 +315,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    //check gameover event function
+
+    //check game over event function
     function isGameOver(){
         return !(currentBlock.every(index =>{
             return (!squares[currentPosition + index].classList.contains('landed-block'));
         }));
     }
+
     // clear the grid function 
     function clearGrid(){
         for(let i =0; i<196;i++){
